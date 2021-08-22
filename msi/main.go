@@ -797,7 +797,11 @@ func quickMake(c *cli.Context) error {
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
-	msi, err = filepath.Rel(out, msi)
+	abs, err := filepath.Abs(out)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+	msi, err = filepath.Rel(abs, msi)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}

@@ -11,12 +11,12 @@ import (
 
 	"github.com/Masterminds/semver"
 	"github.com/bmatcuk/doublestar"
-	"github.com/mat007/go-msi/manifest"
-	"github.com/mat007/go-msi/rtf"
-	"github.com/mat007/go-msi/templates"
-	"github.com/mat007/go-msi/util"
-	"github.com/mat007/go-msi/wix"
 	"github.com/mh-cbon/stringexec"
+	"github.com/stirante/go-msi/manifest"
+	"github.com/stirante/go-msi/rtf"
+	"github.com/stirante/go-msi/templates"
+	"github.com/stirante/go-msi/util"
+	"github.com/stirante/go-msi/wix"
 	"github.com/urfave/cli"
 )
 
@@ -462,7 +462,12 @@ func glob(dir string, patterns []string, f func(match string), fail bool) error 
 			if info.IsDir() {
 				continue
 			}
-			rel, err := filepath.Rel(dir, match)
+			abs, err := filepath.Abs(dir)
+			if err != nil {
+				return cli.NewExitError(err.Error(), 1)
+			}
+			fmt.Println(abs)
+			rel, err := filepath.Rel(abs, match)
 			if err != nil {
 				return err
 			}
@@ -670,7 +675,11 @@ func generateWixCommands(c *cli.Context) error {
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
-	msi, err = filepath.Rel(out, msi)
+	abs, err := filepath.Abs(out)
+	if err != nil {
+		return cli.NewExitError(err.Error(), 1)
+	}
+	msi, err = filepath.Rel(abs, msi)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}

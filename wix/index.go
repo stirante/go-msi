@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mat007/go-msi/manifest"
+	"github.com/stirante/go-msi/manifest"
 )
 
 var eol = "\r\n"
